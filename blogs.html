@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>By Blogs</title>
+    <script src="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/js/jquery.min.js"></script>
+    <script src="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/js/kendo.core.min.js"></script>
+    <script src="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/js/kendo.ui.core.min.js"></script>
+
+     <script src="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/js/kendo.grid.min.js"></script>
+<script src="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/js/kendo.pager.min.js"></script>
+<script src="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/js/kendo.sortable.min.js"></script>
+<script src="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/js/kendo.columnsorter.min.js"></script>
+<script src="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/js/kendo.filtermenu.min.js"></script>
+
+
+
+    <link rel="stylesheet" href="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/styles/kendo.common.min.css"/>
+    <link rel="stylesheet" href="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/styles/kendo.rtl.min.css"/>
+    <link rel="stylesheet" href="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/styles/kendo.silver.min.css"/>
+    <link rel="stylesheet" href="http://bombomapps.com:8088/clients/scdeco_working/telerik.kendoui.2016.3.1118.core/styles/kendo.mobile.all.min.css"/>
+
+
+</head>
+<body>
+
+        <div id="example">
+        <input type="text" name="title" id="title"  />
+        <input type="text" name="description" id="description"  />
+        <input name="post" type="button" value="Post"   onclick='onClickSave()' >
+            <div id="grid"></div>
+
+            <script>
+			
+function onClickSave() {
+
+alert( "save=");
+    $.post("/savepost?title="+$("#title").val() + "&description=" + $("#description").val(), {
+           title: $("#title").val(),
+           description: $("#description").val()
+
+
+           })
+    .done(function(data) {
+		
+			onClickNew();
+		  onClickGetAll();
+          });
+}
+function onClickNew() {
+
+           $("#title").val("");
+           $("#description").val("");
+
+
+
+}
+function onClickGetAll() {
+			
+	$.get("/loadall")
+	.done(function(data) {
+
+	 
+var movies = data;
+		var data_Source = new kendo.data.DataSource({
+			data: movies,pageSize: 5
+		});
+	
+	
+	
+		$("#grid").kendoGrid({
+			dataSource: data_Source,
+			pageable: true,sortable: true,pageable: {
+						input: true,
+						numeric: false
+					},
+					//change: onChange,
+					selectable: "multiple cell",
+					columns: [
+                            { field: "id", title: "#", width: "50px" },
+                            { field: "title", title: "Title", width: "140px" },
+                            { field: "description", title: "description", width: "200px" },
+							{ field: "time", title: "Time", width: "80px" }]					
+	
+		});
+
+	  if (data != "") {
+
+	  }
+	
+	
+	
+	
+	  });	
+}			
+			
+			
+                $(document).ready(function() {
+					onClickGetAll();
+                });
+
+
+
+            </script>
+</div>
+
+</body>
+
+</html>
