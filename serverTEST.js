@@ -1,3 +1,4 @@
+// sample for express JS
 var express = require('express')
 var app = express()
 
